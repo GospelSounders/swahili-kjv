@@ -20,8 +20,22 @@ const command: GluegunCommand = {
       host = toolbox.parameters.options.h || "localhost",
       moduleName = toolbox.parameters.options.m || "KJV",
       dialect = toolbox.parameters.options.d || 'sqlite',
-      modulePositions = ["KJV", "Tr1","Reverse","Tr2","Reverse","Tr3","Reverse","Tr4","Reverse","Tr5","Reverse","Tr6","Reverse", "Swahili"],
-      moduleLanguages = ["Eng", "Kis", "Eng", "Kis", "Eng", "Kis", "Eng", "Kis", "Eng", "Kis", "Eng", "Kis", "Eng", "Kis"],
+      /*
+          From https://www.bible.com/
+          Biblia Habari Njema
+          Biblia Habari Njema
+          Biblia Habari Njema: Toleo la Kujifunza
+          Neno: Bibilia Takatifu 2014
+          Swahili Revised Union Version
+          Swahili Revised Union Version
+          Swahili Union Version
+          Agano Jipya: Tafsiri ya Kusoma-Kwa-Urahisi
+
+Greetings from Paul
+1This letter is from Paul, a slave of God and an apostle of Jesus 
+      */
+      modulePositions = ["KJV", "Tr1", "Reverse", "Tr2", "Reverse", "Tr3", "Reverse", "Tr4", "Reverse", "Tr5", "Reverse", "Tr6", "Reverse", "Swahili", "BHN", "BHND", "BHNTLK", "NEN", "SRUV", "SRUVDC", "SUV", "TKU"],
+      moduleLanguages = ["Eng", "Kis", "Eng", "Kis", "Eng", "Kis", "Eng", "Kis", "Eng", "Kis", "Eng", "Kis", "Eng", "Kis", "Kis", "Kis", "Kis", "Kis", "Kis", "Kis", "Kis", "Kis"],
       modulePosition = modulePositions.indexOf(moduleName),
       moduleLanguage = moduleLanguages[modulePosition]
     // Install the King James Version. It is always needed
@@ -69,7 +83,7 @@ const command: GluegunCommand = {
 
     let formatContent = (content) => {
       content = content.replace(/&nbsp;/g, ' ')
-      content = content.replace(/<div class="sword-markup sword-quote-jesus"\/>([^<]*)<\/q>/g, `{{$1}}`) 
+      content = content.replace(/<div class="sword-markup sword-quote-jesus"\/>([^<]*)<\/q>/g, `{{$1}}`)
       content = content.replace(/<w class="strong:[A-Z0-9]*["]?[^>]*>([^<]*)<\/w>/g, `$1`)
       content = content.replace(/<transChange type="added">([^<]*)<\/transChange>/g, `{$1}`)
       content = content.replace(/<div class="sword-markup sword-note"  type="study"><catchWord>([^<]*)<\/catchWord>([^<]*)<rdg type="[a-z\-]*">([^<]*)<\/rdg><\/div>/g, `[$1$2$3]`)
@@ -87,7 +101,7 @@ const command: GluegunCommand = {
       // content = content.replace(/<div class="sword-markup sword-milestone" marker="¶" subType="x-added" type="x-p"\/>/g, ``) // markers
       // content = content.replace(/<div class="sword-markup sword-quote-jesus"\/>([^<]*)<\/q>/g, `{{$1}}`) 
       content = content.replace(/<w class[^\/]*\/>/g, ``)
-      
+
       content = content.replace(/<w [^>]*>([^<]*)<\/w>/g, `$1`)
       content = content.replace(/<inscription>([^<]*)<\/inscription>/g, `[[$1]]`) // 
       content = content.replace(/<div class="sword-markup sword-section-title" canonical="true" type="psalm">([^<]*)<\/div>/g, `{{{$1}}}`) // psalm title
@@ -96,8 +110,8 @@ const command: GluegunCommand = {
       content = content.replace(/<div class="sword-markup sword-section-title" type="chapter">[^>]*<\/div>/g, ``)
       content = content.replace(/<div class="sword-markup sword-note"  type="study">[^>]*<\/div>/g, ``)
       content = content.replace(/<foreign[^>]*>([^<]*)<\/foreign>/g, `(($1))`)
-      content = content.replace(/<div class="sword-markup sword-quote-jesus"\/>([^<]*)<\/q>/g, `{{$1}}`) 
-      content = content.replace(/<div class="sword-markup sword-quote-jesus"\/><div[^>]*>([^<]*)<\/q>/g, `{{$1}}`) 
+      content = content.replace(/<div class="sword-markup sword-quote-jesus"\/>([^<]*)<\/q>/g, `{{$1}}`)
+      content = content.replace(/<div class="sword-markup sword-quote-jesus"\/><div[^>]*>([^<]*)<\/q>/g, `{{$1}}`)
       content = content.replace(/<div[^>]*>(\(\([^<]*\)\))<\/div>/g, `$1`)
       content = content.replace(/<div [^\/]*\/>/g, ``) // markers
       return content

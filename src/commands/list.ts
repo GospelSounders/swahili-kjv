@@ -6,8 +6,6 @@ const NodeSwordinterface_ = require('node-sword-interface')
 
 let interface_ = new NodeSwordinterface_();
 
-
-
 const command: GluegunCommand = {
   name: 'list',
   description: 'list [-b shortBookName - c chapter]',
