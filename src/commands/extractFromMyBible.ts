@@ -65,13 +65,10 @@ Greetings from Paul
 
     let numTestaments = 1;
     // let myBibleBooks = [...books];
-    if (chapterCount == 1189) numTestaments = 2;
+    if (chapterCount === 1189) numTestaments = 2;
     let bookIndexStart = 0;
     if (numTestaments === 1) bookIndexStart += 39;
-
-    // let extractBooks = async (book) =>{
-
-    // }
+    
     switch (dialect) {
       case "sqlite":
         sequelize = new Sequelize({
@@ -193,9 +190,9 @@ Greetings from Paul
         // console.log($('span.verse').text())
       })
     }
-    let [err, care] = await to(extractChapter(['Gen', 1]))
-    if (err) return toolbox.print.error(err);
-    care;
+    // let [err, care] = await to(extractChapter(['Gen', 1]))
+    // if (err) return toolbox.print.error(err);
+    // care;
     bookIndexStart;
     let bookIndex = bookIndexStart - 1;
     while (++bookIndex < books.length) {

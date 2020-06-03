@@ -2,6 +2,10 @@
 
 A CLI for swahili-kjv. You can use it to translate KJV to swahili.
 
+## Dependencies
+ - mariadb/sqlite
+ - nodejs v10+
+
 ## Available Actions
 
 **Please be sure to first run `sudo mkdir -p /usr/share/swahili-kjv/data` and assign the proper permissions. Otherwise commands which write to that directory will fail.**
@@ -30,16 +34,16 @@ To list verses in chapter: `list shortBookName chapter`
 
 3. Download Swahili Versions
 
-Swahili versions from https://www.bible.com/
+Swahili versions from [bible.com](https://www.bible.com/). You can check the versions at [swahili bible versions](https://www.bible.com/json/bible/versions/swh?filter=)
 
-- BHN
-- BHND
-- BHNTLK
-- NEN
-- SRUV
-- SRUVDC
-- SUV
-- TKU
+1. BHN  - Biblia Habari Njema
+2. BHND - Biblia Habari Njema
+3. BHNTLK - Biblia Habari Njema: Toleo la Kujifunza
+4. NEN - Neno: Bibilia Takatifu 2014
+5. SRUV - Swahili Revised Union Version
+6. SRUVDC - Swahili Revised Union Version
+7. SUV - Swahili Union Version
+8. TKU - Agano Jipya: Tafsiri ya Kusoma-Kwa-Urahisi
 
 ```bash
 swahili-kjv downloadfrommybible -m SUV{etc}
@@ -62,8 +66,10 @@ swahili-kjv extractfrommybible -m BHN -u user -p password -d mariadb
 ```
 
 
-3. Translating
+5. Translating
 
 ```
-translate [-b book -c chapter -v verse]
+translate [-b book -c chapter -v verse -u user -p password -d dialect]
 ```
+
+.
