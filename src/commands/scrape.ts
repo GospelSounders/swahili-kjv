@@ -39,20 +39,21 @@ const command: GluegunCommand = {
       //     // print? toolbox.print.err(clone.stderr.length)
       //     throw clone.stderr.length
       // }
+      try {
+        registeredVersionsinIndex = filesystem.read(
+          `${myBibleRepoDir}/registeredVersions.js`
+        )
+        registeredVersionsinIndex = JSON.parse(registeredVersionsinIndex)
+      } catch (error) {
+        filesystem.write(
+          `${myBibleRepoDir}/registeredVersions.js`,
+          JSON.stringify({})
+        )
+      }
     }
     await clone()
 
-    try {
-      registeredVersionsinIndex = filesystem.read(
-        `${myBibleRepoDir}/registeredVersions.js`
-      )
-      registeredVersionsinIndex = JSON.parse(registeredVersionsinIndex)
-    } catch (error) {
-      filesystem.write(
-        `${myBibleRepoDir}/registeredVersions.js`,
-        JSON.stringify({})
-      )
-    }
+   
 
     const getBibleVersions = async () => {
       return new Promise(async (resolve, reject) => {
@@ -212,9 +213,9 @@ const command: GluegunCommand = {
     await pushRepo()
 
     let chaptersToDownloadAtaTime = 10
-    try{
-        chaptersToDownloadAtaTime = parseInt(toolbox.parameters.options.n)
-    }catch(error){}
+    try {
+      chaptersToDownloadAtaTime = parseInt(toolbox.parameters.options.n)
+    } catch (error) {}
     let linksForBookChapters = []
     const downloadChapterText = async (chapter, version) => {
       return new Promise(async (resolve, reject) => {
