@@ -1,8 +1,8 @@
 {
   "name": "swahili-kjv",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "swahili-kjv CLI",
-  "private": true,
+  "private": false,
   "types": "build/types/types.d.ts",
   "bin": {
     "swahili-kjv": "bin/swahili-kjv"
@@ -13,7 +13,7 @@
     "clean-build": "rm -rf ./build",
     "compile": "tsc -p .",
     "copy-templates": "if [ -e ./src/templates ]; then cp -a ./src/templates ./build/; fi",
-    "build": "yarn format && yarn lint && yarn clean-build && yarn compile && yarn copy-templates",
+    "build": "yarn format && yarn clean-build && yarn compile && yarn copy-templates",
     "prepublishOnly": "yarn build",
     "test": "jest",
     "watch": "jest --watch",
