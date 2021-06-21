@@ -64,7 +64,7 @@ const command: GluegunCommand = {
         let version = JSON.parse(versionInfo)
         versionInfo = version.version
         let versionBooks = version.versionBooks
-        // console.log(version)
+        console.log(version)
         let template = filesystem.read(
           `/tmp/kjv-swahili/index.version.template.html`
         )
