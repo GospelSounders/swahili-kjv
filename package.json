@@ -1,6 +1,6 @@
 {
   "name": "swahili-kjv",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "swahili-kjv CLI",
   "private": false,
   "types": "build/types/types.d.ts",
