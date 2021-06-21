@@ -364,10 +364,16 @@ const command: GluegunCommand = {
                     try {
                         filesystem.write(`/tmp/kjv-swahili/index.html`, template)
                     } catch (error) { }
+                    try {
+                        filesystem.write(
+                            `${myBibleRepoDir}/registeredVersions.js`,
+                            JSON.stringify(registeredVersionsinIndex)
+                        )
+                    } catch (error) { }
                 }
                 //registeredVersionsinIndex
                 try {
-                    filesystem.write(`/tmp/kjv-swahili${parts}/index.html`, care);
+                    filesystem.write(`/tmp/kjv-swahili${parts}/index.html`, care)
                 } catch (error) { }
                 if (err) return reject(err)
                 // console.log(care);
@@ -403,6 +409,9 @@ const command: GluegunCommand = {
         // emits on new datagram msg
         server.on('message', async (msg, info) => {
             console.log('going to next batch of', pageGroups.length)
+            if (pageGroups.length === 0) {
+                process.exit();
+            }
             let tmpLinks = pageGroups.shift()
             promises = tmpLinks.map(downloadPageText)
             await to(Promise.all(promises))
