@@ -10,6 +10,14 @@ A CLI for swahili-kjv. You can use it to translate KJV to swahili.
 
 **Please be sure to first run `sudo mkdir -p /usr/share/swahili-kjv/data` and assign the proper permissions. Otherwise commands which write to that directory will fail.**
 
+0. Scraping bible.com
+
+```bash
+scrape -k path-to-key [-s (skip downloading json files already downloaded) -f (force to download html files which have already been downloaded)]
+```
+
+visit [link](https://bible.com.gospelsounders.org/) to see result. Although the site is not the real reason for this. We can't to scrape the data from the pages into a db for comparison to aid in translation.
+
 1. Downloading KJV Bible
 
 This can be done either by downloading a sword module and putting into a database or by importing the existing database with the kjv text.

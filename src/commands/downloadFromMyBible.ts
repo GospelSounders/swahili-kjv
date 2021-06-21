@@ -1,7 +1,8 @@
 import { GluegunCommand, filesystem } from 'gluegun'
 const NodeSwordinterface_ = require('node-sword-interface'),
   to = require('await-to-js').to,
-  axios = require('axios')
+  axios = require('axios'),
+  cloudscraper = require('cloudscraper');
 // const { Sequelize } = require('sequelize');
 // const fs = require("fs-extra");
 // const util = require("util");
@@ -17,31 +18,31 @@ const command: GluegunCommand = {
   run: async toolbox => {
     if (!interface_.repositoryConfigExisting()) interface_.updateRepositoryConfig();
 
-    let 
+    let
       // username = toolbox.parameters.options.u,
       // password = toolbox.parameters.options.p,
       // host = toolbox.parameters.options.h || "localhost",
       moduleName = toolbox.parameters.options.m || "KJV",
       // dialect = toolbox.parameters.options.d || 'sqlite',
       reverse = toolbox.parameters.options.r
-      /*
-          From https://www.bible.com/
-          Biblia Habari Njema
-          Biblia Habari Njema
-          Biblia Habari Njema: Toleo la Kujifunza
-          Neno: Bibilia Takatifu 2014
-          Swahili Revised Union Version
-          Swahili Revised Union Version
-          Swahili Union Version
-          Agano Jipya: Tafsiri ya Kusoma-Kwa-Urahisi
+    /*
+        From https://www.bible.com/
+        Biblia Habari Njema
+        Biblia Habari Njema
+        Biblia Habari Njema: Toleo la Kujifunza
+        Neno: Bibilia Takatifu 2014
+        Swahili Revised Union Version
+        Swahili Revised Union Version
+        Swahili Union Version
+        Agano Jipya: Tafsiri ya Kusoma-Kwa-Urahisi
 
 Greetings from Paul
 1This letter is from Paul, a slave of God and an apostle of Jesus 
-      */
-      // modulePositions = ["KJV", "Tr1", "Reverse", "Tr2", "Reverse", "Tr3", "Reverse", "Tr4", "Reverse", "Tr5", "Reverse", "Tr6", "Reverse", "Swahili", "BHN", "BHND", "BHNTLK", "NEN", "SRUV", "SRUVDC", "SUV", "TKU"],
-      // moduleLanguages = ["Eng", "Kis", "Eng", "Kis", "Eng", "Kis", "Eng", "Kis", "Eng", "Kis", "Eng", "Kis", "Eng", "Kis", "Kis", "Kis", "Kis", "Kis", "Kis", "Kis", "Kis", "Kis"],
-      // modulePosition = modulePositions.indexOf(moduleName)
-      // moduleLanguage = moduleLanguages[modulePosition]
+    */
+    // modulePositions = ["KJV", "Tr1", "Reverse", "Tr2", "Reverse", "Tr3", "Reverse", "Tr4", "Reverse", "Tr5", "Reverse", "Tr6", "Reverse", "Swahili", "BHN", "BHND", "BHNTLK", "NEN", "SRUV", "SRUVDC", "SUV", "TKU"],
+    // moduleLanguages = ["Eng", "Kis", "Eng", "Kis", "Eng", "Kis", "Eng", "Kis", "Eng", "Kis", "Eng", "Kis", "Eng", "Kis", "Kis", "Kis", "Kis", "Kis", "Kis", "Kis", "Kis", "Kis"],
+    // modulePosition = modulePositions.indexOf(moduleName)
+    // moduleLanguage = moduleLanguages[modulePosition]
 
     let books = interface_.getBookList('KJV');
     // Install the King James Version. It is always needed
@@ -62,16 +63,22 @@ Greetings from Paul
     // ]
     console.log('---1')
     let getBibleVersions = async (version) => {
-      return new Promise((resolve, reject) => {
-        axios.get("https://www.bible.com/json/bible/versions/swh?filter=")
-          .then(response => {
-            response = response.data.items
-            response = response.filter(item => item.local_abbreviation === version)
-            resolve(response)
-          })
-          .catch(err => {
-            reject(err)
-          })
+      return new Promise(async (resolve, reject) => {
+        // axios.get("https://www.bible.com/json/bible/versions/swh?filter=")
+        //   .then(response => {
+        //     response = response.data.items
+        //     response = response.filter(item => item.local_abbreviation === version)
+        //     resolve(response)
+        //   })
+        //   .catch(err => {
+        //     reject(err)
+        //   })
+        let [err, care] = await to(cloudscraper.get(`https://www.bible.com/json/bible/versions/swh?filter=`))
+        if (err) return reject(err)
+        let response = care
+        response = response.data.items
+        response = response.filter(item => item.local_abbreviation === version)
+        resolve(response)
       })
     }
     let [err, care] = await to(getBibleVersions(moduleName));
@@ -95,8 +102,8 @@ Greetings from Paul
     if (err) return toolbox.print.error(err);
     console.log(care)
     let myBibleBooks = care;
-    if(reverse)myBibleBooks = myBibleBooks.reverse();
-    if(myBibleBooks.length > 66)myBibleBooks.splice(39, myBibleBooks.length - 66)  // remove apocrypha
+    if (reverse) myBibleBooks = myBibleBooks.reverse();
+    if (myBibleBooks.length > 66) myBibleBooks.splice(39, myBibleBooks.length - 66)  // remove apocrypha
     // console.log(myBibleBooks)
     // console.log(myBibleBooks.length)
     // process.exit();
@@ -114,7 +121,7 @@ Greetings from Paul
         filesystem.dir(`/usr/share/swahili-kjv/data/${versionInfo["local_abbreviation"]}`)
         let fileName = `/usr/share/swahili-kjv/data/${versionInfo["local_abbreviation"]}/${shortBookName}-${chapter}.html`
         let fileExists = filesystem.exists(fileName);
-        if(fileExists)return resolve(true)
+        if (fileExists) return resolve(true)
         console.log(url)
         axios.get(url)
           .then(async response => {
@@ -152,7 +159,7 @@ Greetings from Paul
         let bookText = interface_.getBookText('KJV', shortBookName);
         let chapters = []
         chapters = bookText.map(item => item.chapter).filter(onlyUnique)
-        chapters = chapters.map(chapter => [{ book, chapter, shortBookName}][0])
+        chapters = chapters.map(chapter => [{ book, chapter, shortBookName }][0])
         // console.log(chapters)
         // chapters = chapters[0] // check
         // console.log(chapters)
@@ -160,7 +167,7 @@ Greetings from Paul
         let [err, care] = await to(Promise.all(promises))
         if (err) return toolbox.print.error(err);
         // console.log(care)
-        resolve( care)
+        resolve(care)
         // let version = versionInfo.id
         // return new Promise((resolve, reject) => {
         //   axios.get(`https://www.bible.com/bible/${versionId}/${book}.${chapter}.TKU`)
