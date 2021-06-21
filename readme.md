@@ -18,6 +18,14 @@ scrape -k path-to-key [-s (skip downloading json files already downloaded) -f (f
 
 visit [link](https://bible.com.gospelsounders.org/) to see result. Although the site is not the real reason for this. We can't to scrape the data from the pages into a db for comparison to aid in translation.
 
+0. Adding index.html for all the versions after step 1
+
+```bash
+scrapedIndices -k path-to-key
+```
+
+visit [link](https://bible.com.gospelsounders.org/) to see result. Although the site is not the real reason for this. We can't to scrape the data from the pages into a db for comparison to aid in translation.
+
 1. Downloading KJV Bible
 
 This can be done either by downloading a sword module and putting into a database or by importing the existing database with the kjv text.
